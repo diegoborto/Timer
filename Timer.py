@@ -19,7 +19,10 @@ def beep(freq=1000, dur=200):
             print("\a", end="")  # fallback
 
 print(colored('Timer','blue'))
-lenght = input('How many minutes? ')
+lenght = ''
+while lenght == '':
+    lenght = input('How many minutes? ')
+
 message = input('Type the message: ')
 print('')
 # Get the current date and time
