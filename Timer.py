@@ -5,6 +5,9 @@ from datetime import datetime
 import platform
 import os
 import winsound
+from rich.console import Console
+from rich.live import Live
+from rich.text import Text
 
 def beep(freq=1000, dur=200):
     system = platform.system()
@@ -18,10 +21,14 @@ def beep(freq=1000, dur=200):
         else:
             print("\a", end="")  # fallback
 
+console = Console()
+
+#--------------------------------------------------------------------------------------------------
+
 print(colored('Timer','blue'))
 lenght = ''
 while lenght == '':
-    lenght = input('How many minutes? ')
+    lenght = int(input('How many minutes? '))
 
 message = input('Type the message: ')
 print('')
@@ -31,7 +38,12 @@ current_time = now.time()
 formatted_time = now.strftime("%H:%M:%S")
 print('Timer started at', formatted_time, 'for ', lenght, ' minutes.')
 
-time.sleep(int(lenght)*60)
+lenght_sec = int(lenght) * 60
+
+with Live(console=console, refresh_per_second=2) as live:
+    for i in range(lenght):
+        live.update(Text(f"Minutes remaining: {lenght - i}", style="bold magenta"))
+        time.sleep(60)
 
 now = datetime.now()
 current_time = now.time()
